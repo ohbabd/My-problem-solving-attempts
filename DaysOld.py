@@ -1,52 +1,44 @@
-#This script calculates how many days are there between to given dates
-#Dates are supposed correct
-
-# calculates how many leap years
-#there are between the two dates.
-def leapYear(year1,year2):
-    leap = 0
-    while year1 <= year2:
-        if year1 % 4 == 0:
-            leap = leap + 1
-            if year1 % 100 == 0 and year1 % 400 != 0:
-                leap = leap - 1
-        year1 = year1 + 1
-    return leap
-
-#Array to store month days
-monthsDays = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-
-# calculates how many days we must not include before
-#the first date and after the second date
-def daysLived(month,day):
-    i = 1
-    livedDays = 0
-    while i < month:
-        livedDays = livedDays + monthsDays[i]
-        i = i + 1
-    return livedDays + day - 1
-
-#Calculates das between to given dates
-def daysBetweenDates(year1,month1,day1,year2,month2,day2):
-    days = (year2 - year1) * 365 + leapYear(year1,year2) #Total days between the 2 years
-    days2sub = daysLived(month1,day1)                    #Days to exlude
-    days = days + days2add - days2sub
-    
-    if month2 == 2:             # If it's a leap year and month2 is February, we
-        days = days - 1         #will add 2 leap days instead of one, so here we
-                                #substract 1 day if it's the case
-    return days
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# This script calculates how many days are there between to given dates                                    
+# Dates are supposed correct                                                                               
+                                                                                                           
+                                                                                                           
+monthsDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]   # Array to store days of months            
+                                                                                                           
+                                                                                                           
+def leap_year(year1, year2):                    # calculates how many leap years                           
+    leap = 0                                    # there are between the two dates.                         
+    while year1 <= year2:                                                                                  
+        if year1 % 4 == 0:                                                                                 
+            leap = leap + 1                                                                                
+            if year1 % 100 == 0 and year1 % 400 != 0:                                                      
+                leap = leap - 1                                                                            
+        year1 = year1 + 1                                                                                  
+    return leap                                                                                            
+                                                                                                           
+                                                                                                           
+def add_or_sub_days(month, day):                # Calculates the number of days we should                  
+    i = 0                                       # include/exclude after the second/first year              
+    days = 0                                                                                               
+    while i + 1 < month:                                                                                   
+        days = days + monthsDays[i]                                                                        
+        i = i + 1                                                                                          
+    return days + day - 1                                                                                  
+                                                                                                           
+                                                                                                           
+def days_between_dates(year1, month1, day1, year2, month2, day2):                                          
+    days_between_years = (year2 - year1) * 365 + leap_year(year1, year2)  # total days between the 2 years 
+    days2sub = add_or_sub_days(month1, day1)  # days to exclude after the first year                       
+    days2add = add_or_sub_days(month2, day2)  # days to include after the second year                      
+    days = days_between_years + days2add - days2sub                                                        
+                                                                                                           
+    if year1 % 100 == 0 and year1 % 400 != 0:  # Checks if year2 is a leap year                            
+        leap = False                                                                                       
+    elif year1 % 4 == 0:                                                                                   
+        leap = True                                                                                        
+                                                                                                           
+    if month2 <= 2 and leap:                 # Also if the second date is before February 29th             
+        days = days - 1                      # in a leap year we should not add a leap day.                
+        if day2 == 29:                       # And if the second date si exactly February 29th in          
+            days = days - 1                  # a leap year, we will add 2 leap days, so we subtract 1 here.
+                                                                                                           
+    return days                                                                                            
