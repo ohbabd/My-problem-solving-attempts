@@ -1,12 +1,12 @@
 def rule(n):
-    rules_numbers = {128: 'xxx', 64: 'xx.', 32: 'x.x', 16: 'x..',
-                     8: '.xx', 4: '.x.', 2: '..x', 1: '...'}
+    rules_numbers = [[128, 'xxx'], [64, 'xx.'], [32, 'x.x'], [16, 'x..'],
+                     [8, '.xx'], [4, '.x.'], [2, '..x'], [1, '...']]
     rules = {'...': '.', '..x': '.', '.x.': '.', '.xx': '.', 'x..': '.', 'x.x': '.', 'xx.': '.', 'xxx': '.'}
     while n != 0:
         for r in rules_numbers:
-            if n - r >= 0:
-                rules[rules_numbers[r]] = 'x'
-                n -= r
+            if n - r[0] >= 0:
+                rules[r[1]] = 'x'
+                n -= r[0]
                 break
     return rules
 
